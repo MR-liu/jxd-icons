@@ -19,7 +19,7 @@ async function readConfig() {
     item[basename] = () => require(`components/icons/${basename}`);
 
     if (basename !== '.DS_Store') {
-      result.push(`export { Svg${basename} } from './icons/${basename}'`)  
+      result.push(`export { default as Svg${basename} } from './icons/${basename}'`)  
     }
   }
 

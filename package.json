@@ -5,7 +5,12 @@
   "main": "svgr.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "svg": "svgr --no-dimensions --ext tsx --config-file svgr.config.js -d  ./components/icons  ./components/assets && node ./components/getIndex.js"
+    "build": "npm run clean && npm run build:js && npm run build:es",
+    "build:js": "npm run build:js:types && babel components --out-dir lib --extensions '.ts,.tsx'",
+    "build:js:types": "tsc --emitDeclarationOnly",
+    "build:es": "npm run build:es:types && NODE_ENV=es babel components --out-dir es --extensions '.ts,.tsx'",
+    "svg": "svgr --no-dimensions --ext tsx --config-file svgr.config.js -d  ./components/icons --replace-attr-values '#4E4E4E={currentColor ? currentColor : \"#4E4E4E\"}' ./components/assets && node ./components/getIndex.js",
+    "clean": "rimraf lib es"
   },
   "repository": {
     "type": "git",
@@ -19,6 +24,29 @@
   },
   "homepage": "https://github.com/MR-liu/jxd-icons#readme",
   "devDependencies": {
-    "prettier": "^1.18.2"
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.1.0",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.1.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "prettier": "^1.18.2",
+    "rimraf": "^2.6.3",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "@types/react": "^16.8.19",
+    "@types/react-dom": "^16.8.4",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts-ts": "^3.1.0"
   }
 }

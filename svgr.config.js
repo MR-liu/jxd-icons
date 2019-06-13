@@ -1,4 +1,3 @@
-// svgr --no-dimensions --ext tsx --config-file svgr.config.js -d  ./src  ./assets
 function template(
   { template },
   opts,
@@ -6,20 +5,27 @@ function template(
 ) {
   const typeScriptTpl = template.smart({ plugins: ['typescript'] })
   return typeScriptTpl.ast`
-    import * as React from 'react';
-    type Props = {
-      size?: string | number,
-      fill?: string
-    };
+    import React, { PureComponent } from 'react'
+    export interface IconsProps {
+      className?: string;
+      size?: string | number;
+      fill?: string;
+      color?: string;
+      currentColor?: string;
+      onClick?: React.MouseEventHandler<SVGSVGElement>;
+    }
     const style = {
-      display: "block",
-      flex: "0 0 auto",
-    };
-    export const ${componentName} = ({ size, fill, ...props }: Props) => {
-      return (
-        ${jsx}
-      );
-    };
+      display: 'block',
+      flex: '0 0 auto',
+      cursor: 'pointer'
+    }
+    export default class ${componentName} extends PureComponent<IconsProps, {}> {
+      render() {
+        const props = this.props
+        const { size, fill, color, currentColor } = props
+        return ${jsx}
+      }
+    }
   `
 }
 module.exports = {
@@ -31,5 +37,6 @@ module.exports = {
     fontSize: `{size == null ? 32 : size}`,
     fill: `{fill == null ? "currentColor" : fill}`,
     style: '{style}',
+    color: '{color}',
   },
 }
